@@ -23,9 +23,10 @@ public class EIUONCE {
             }
 
             once(a);
-            System.out.println(sb.toString().trim());
-            sb.setLength(0);
+            
         }
+
+        System.out.print(sb.toString().trim());
     }
 
     public static void once(int[] a) {
@@ -40,6 +41,8 @@ public class EIUONCE {
                 sb.append(entry.getKey()).append(" ");
             }
         }
+        
+        sb.append("\n");
     }
 
     static class InputReader {
