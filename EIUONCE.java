@@ -1,44 +1,124 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 public class EIUONCE {
+
+    static InputReader rd = new InputReader(System.in);
+    static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        int n = rd.nextInt();
 
-        for(int i = 0; i < n; i++){
-            int size = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            int size = rd.nextInt();
             int[] a = new int[size];
-            for(int j = 0; j < size; j++){
-                a[j] = sc.nextInt();
+            for (int j = 0; j < size; j++) {
+                a[j] = rd.nextInt();
             }
+
             once(a);
-            System.out.println();
+            System.out.println(sb.toString().trim());
+            sb.setLength(0);
         }
-        
     }
-    public static void once(int [] a){
-        List<Integer> list = new ArrayList<>();
-        Arrays.sort(a);
-        for(int x : a){
-            if(!list.contains(x) && countOccur(a, x) == 1){
-                list.add(x);
-            }
+
+    public static void once(int[] a) {
+        TreeMap<Integer, Integer> countMap = new TreeMap<>();
+        for (int num : a) {
+            int times = countMap.getOrDefault(num, 0);
+            countMap.put(num, times + 1);
         }
 
-        for(int x : list){
-            System.out.print(x + " ");
-        }
-    }
-    public static int countOccur(int [] a, int num){
-        int count = 0;
-        for(int x : a){
-            if(x == num){
-                count++;
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            if (entry.getValue() == 1) {
+                sb.append(entry.getKey()).append(" ");
             }
         }
-        return count;
+    }
+
+    static class InputReader {
+
+        StringTokenizer tokenizer;
+
+        BufferedReader reader;
+
+        String token;
+
+        String temp;
+
+        public InputReader(InputStream stream) {
+
+            tokenizer = null;
+
+            reader = new BufferedReader(new InputStreamReader(stream));
+
+        }
+
+        public InputReader(FileInputStream stream) {
+
+            tokenizer = null;
+
+            reader = new BufferedReader(new InputStreamReader(stream));
+
+        }
+
+        public String nextLine() throws IOException {
+
+            return reader.readLine();
+
+        }
+
+        public String next() {
+
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+
+                try {
+
+                    if (temp != null) {
+
+                        tokenizer = new StringTokenizer(temp);
+
+                        temp = null;
+
+                    } else {
+
+                        tokenizer = new StringTokenizer(reader.readLine());
+
+                    }
+
+                } catch (IOException e) {
+
+                }
+
+            }
+
+            return tokenizer.nextToken();
+
+        }
+
+        public double nextDouble() {
+
+            return Double.parseDouble(next());
+
+        }
+
+        public int nextInt() {
+
+            return Integer.parseInt(next());
+
+        }
+
+        public long nextLong() {
+
+            return Long.parseLong(next());
+
+        }
+
     }
 }
