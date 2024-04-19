@@ -2,9 +2,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class EIPAGES {
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         // Read the number of page numbers
         int n = scanner.nextInt();
