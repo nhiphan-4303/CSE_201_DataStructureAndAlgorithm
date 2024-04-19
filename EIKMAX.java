@@ -1,43 +1,24 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class EIUONCE {
-
-    static InputReader rd = new InputReader(System.in);
-    static StringBuilder sb = new StringBuilder();
+public class EIKMAX {
+    static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int n = rd.nextInt();
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        List<Long> a = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            int size = rd.nextInt();
-            int[] a = new int[size];
-            for (int j = 0; j < size; j++) {
-                a[j] = rd.nextInt();
-            }
-
-            once(a);
-
+            a.add(sc.nextLong());
         }
 
-        System.out.print(sb.toString().trim());
-    }
+        a.sort((o2, o1) -> Long.compare(o1, o2));
 
-    public static void once(int[] a) {
-        Arrays.sort(a);
-        Map<Integer, Integer> countMap = new HashMap<>();
-        for (int num : a) {
-            int times = countMap.getOrDefault(num, 0);
-            countMap.put(num, times + 1);
+        for (int i = 0; i < k; i++) {
+            System.out.print(a.get(i) + " ");
         }
-
-        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
-            if (entry.getValue() == 1) {
-                sb.append(entry.getKey()).append(" ");
-            }
-        }
-
-        sb.append("\n");
     }
 
     static class InputReader {

@@ -1,43 +1,32 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class EIUONCE {
-
-    static InputReader rd = new InputReader(System.in);
+public class EI20213Q2 {
+    static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int n = rd.nextInt();
+        int n = sc.nextInt();
+        long[] m = new long[n];
 
         for (int i = 0; i < n; i++) {
-            int size = rd.nextInt();
-            int[] a = new int[size];
-            for (int j = 0; j < size; j++) {
-                a[j] = rd.nextInt();
-            }
-
-            once(a);
-
+            m[i] = sc.nextLong();
         }
 
-        System.out.print(sb.toString().trim());
-    }
-
-    public static void once(int[] a) {
-        Arrays.sort(a);
-        Map<Integer, Integer> countMap = new HashMap<>();
-        for (int num : a) {
-            int times = countMap.getOrDefault(num, 0);
-            countMap.put(num, times + 1);
+        Map<Long, Integer> countMap = new HashMap<>();
+        for (long num : m) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
 
-        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
-            if (entry.getValue() == 1) {
-                sb.append(entry.getKey()).append(" ");
-            }
+        List<Long> sortedKeys = new ArrayList<>(countMap.keySet());
+        Collections.sort(sortedKeys);
+
+        for (long key : sortedKeys) {
+            sb.append(key).append(" ").append(countMap.get(key)).append("\n");
         }
 
-        sb.append("\n");
+        System.out.println(sb);
+
     }
 
     static class InputReader {
