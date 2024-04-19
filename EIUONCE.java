@@ -24,8 +24,8 @@ public class EIUONCE {
     }
 
     public static void once(int[] a) {
-        Arrays.sort(a);
-        Map<Integer, Integer> countMap = new HashMap<>();
+        //Arrays.sort(a);
+        Map<Integer, Integer> countMap = new TreeMap<>();
         for (int num : a) {
             int times = countMap.getOrDefault(num, 0);
             countMap.put(num, times + 1);

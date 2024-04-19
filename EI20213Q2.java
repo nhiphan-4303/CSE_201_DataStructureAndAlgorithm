@@ -12,21 +12,20 @@ public class EI20213Q2 {
         for (int i = 0; i < n; i++) {
             m[i] = sc.nextLong();
         }
+        count(m, sb);
+        System.out.print(sb);
+    }
 
-        Map<Long, Integer> countMap = new HashMap<>();
+    public static void count(long[] m, StringBuilder sb) {
+        //Arrays.sort(m);
+        Map<Long, Integer> countMap = new TreeMap<>();
         for (long num : m) {
             countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
 
-        List<Long> sortedKeys = new ArrayList<>(countMap.keySet());
-        Collections.sort(sortedKeys);
-
-        for (long key : sortedKeys) {
-            sb.append(key).append(" ").append(countMap.get(key)).append("\n");
+        for (Map.Entry<Long, Integer> entry : countMap.entrySet()) {
+            sb.append(entry.getKey() + " " + entry.getValue() + "\n");
         }
-
-        System.out.println(sb);
-
     }
 
     static class InputReader {
