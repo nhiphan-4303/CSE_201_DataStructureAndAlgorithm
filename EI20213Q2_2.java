@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class EI20213Q2 {
+class EI20213Q2_2 {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
@@ -17,23 +17,21 @@ public class EI20213Q2 {
     }
 
     public static void count(long[] m, StringBuilder sb) {
-        //Arrays.sort(m);
-        //Map<Long, Integer> countMap = new HashMap<>();
-        Map<Long, Integer> countMap = new TreeMap<>();
-        for (long num : m) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        Arrays.sort(m);
+        long current = m[0];
+        int count = 1;
+
+        for (int i = 1; i < m.length; i++) {
+            if (m[i] == current) {
+                count++;
+            } else {
+                sb.append(current + " " + count + "\n");
+                current = m[i];
+                count = 1;
+            }
         }
-        // List<Long> sortedKeys = new ArrayList<>(countMap.keySet());
-        // Collections.sort(sortedKeys);  
-        
-        // for (Long key : sortedKeys) {
-        //     sb.append(key).append(" ").append(countMap.get(key)).append("\n");
-        // }
-        for (Map.Entry<Long, Integer> entry : countMap.entrySet()) {
-            sb.append(entry.getKey() + " " + entry.getValue() + "\n");
-        }
+        sb.append(current + " " + count + "\n");
     }
-    
 
     static class InputReader {
 
