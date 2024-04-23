@@ -6,19 +6,15 @@ public class EIPAGES {
 
     public static void main(String[] args) {
 
-        // Read the number of page numbers
         int n = scanner.nextInt();
 
-        // Read the page numbers into an array
         int[] pages = new int[n];
         for (int i = 0; i < n; i++) {
             pages[i] = scanner.nextInt();
         }
 
-        // Sort the array
         Arrays.sort(pages);
 
-        // Iterate through the array to print the pages
         for (int i = 0; i < n; i++) {
             int start = pages[i];
             int end = start;

@@ -1,36 +1,32 @@
 import java.util.*;
 import java.io.*;
 
-public class EIPICNIC {
-    static InputReader rd = new InputReader(System.in);
+public class EIPAIR {
+    static InputReader sc = new InputReader(System.in);
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int[] group = new int[5];
-        int n = rd.nextInt();
+        int t = sc.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = sc.nextInt();
+            Map<Integer, Integer> priceCount = new HashMap<>();
 
-        for (int i = 0; i < n; i++) {
-            group[rd.nextInt()]++;
+            for (int j = 0; j < n; j++) {
+                int price = sc.nextInt();
+                priceCount.put(price, priceCount.getOrDefault(price, 0) + 1);
+            }
+
+            long ways = 0;
+            for (int count : priceCount.values()) {
+                if (count > 1) {
+                    ways += (long) count * (count - 1) / 2;
+                }
+            }
+
+            sb.append(ways).append("\n");
         }
 
-        int cars = group[4]
-                + group[3]
-                + group[2] / 2 + group[2] % 2;
-
-        int over = group[1] - group[3];
-
-        if (group[2] % 2 != 0) {
-            over -= 2;
-        }
-
-        if (over > 0) {
-            // cars += over / 4;
-            // if (over % 4 != 0) {
-            // cars++;
-            // }
-            cars += (over + 3) / 4;
-        }
-
-        System.out.println(cars);
+        System.out.print(sb);
     }
 
     static class InputReader {

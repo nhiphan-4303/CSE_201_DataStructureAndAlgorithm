@@ -1,36 +1,22 @@
 import java.util.*;
 import java.io.*;
 
-public class EIPICNIC {
+public class EIDORM {
     static InputReader rd = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int[] group = new int[5];
         int n = rd.nextInt();
-
+        int count = 0;
         for (int i = 0; i < n; i++) {
-            group[rd.nextInt()]++;
+            int people = rd.nextInt();
+            int space = rd.nextInt();
+
+            if (space - people >= 2) {
+                count++;
+            }
         }
 
-        int cars = group[4]
-                + group[3]
-                + group[2] / 2 + group[2] % 2;
-
-        int over = group[1] - group[3];
-
-        if (group[2] % 2 != 0) {
-            over -= 2;
-        }
-
-        if (over > 0) {
-            // cars += over / 4;
-            // if (over % 4 != 0) {
-            // cars++;
-            // }
-            cars += (over + 3) / 4;
-        }
-
-        System.out.println(cars);
+        System.out.print(count);
     }
 
     static class InputReader {
