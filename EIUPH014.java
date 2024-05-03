@@ -1,32 +1,53 @@
 import java.util.*;
 import java.io.*;
 
-public class EIPICNIC {
+public class EIUPH014 {
     static InputReader rd = new InputReader(System.in);
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int[] group = new int[5];
-        int n = rd.nextInt();
+        while (true) {
+            int n = rd.nextInt();
+            if (n == 0) {
+                break;
+            }
 
-        for (int i = 0; i < n; i++) {
-            group[rd.nextInt()]++;
+            int[] a = new int[n];
+            for (int i = 0; i < n; i++) {
+                a[i] = rd.nextInt();
+            }
+            sb.append(countIterations(a) + "\n");
         }
+        System.out.println(sb);
+    }
 
-        int cars = group[4]
-                + group[3]
-                + group[2] / 2 + group[2] % 2;
+    // 1 2 3 4
+    // 0 1 2 3
+    // 1 1 1 3
 
-        int over = group[1] - group[3];
-
-        if (group[2] % 2 != 0) {
-            over -= 2;
+    public static int countIterations(int[] a) {
+        int loop = 0;
+        while (checkResult(a) == false) {
+            int[] new_arr = new int[a.length];
+            for (int i = 0; i < a.length - 1; i++) {
+                new_arr[i] = Math.abs(a[i] - a[i + 1]);
+            }
+            // handle last number
+            new_arr[a.length - 1] = Math.abs(a[a.length - 1] - a[0]);
+            a = new_arr;
+            loop++;
+            if (loop > 1000)
+                return -1;
         }
+        return loop;
+    }
 
-        if (over > 0) {
-            cars += (over + 3) / 4;
+    public static boolean checkResult(int[] a) {
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != a[0])
+                return false;
         }
-
-        System.out.println(cars);
+        return true;
     }
 
     static class InputReader {

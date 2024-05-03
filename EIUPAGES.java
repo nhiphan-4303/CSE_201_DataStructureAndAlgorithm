@@ -1,32 +1,52 @@
 import java.util.*;
 import java.io.*;
 
-public class EIPICNIC {
-    static InputReader rd = new InputReader(System.in);
+public class EIUPAGES {
+    static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int[] group = new int[5];
-        int n = rd.nextInt();
 
-        for (int i = 0; i < n; i++) {
-            group[rd.nextInt()]++;
+        List<String> list = new ArrayList<>();
+        int numberOfPages = sc.nextInt();
+
+        int[] a = new int[numberOfPages];
+        for (int i = 0; i < numberOfPages; i++) {
+            a[i] = sc.nextInt();
+        }
+        Arrays.sort(a);
+
+        int start = a[0];
+        int end = start;
+
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] == end + 1) {
+                end = a[i];
+            } else {
+                if (end == start) {
+                    list.add(Integer.toString(start));
+                } else if (end == start + 1) {
+                    list.add(Integer.toString(start));
+                    list.add(Integer.toString(end));
+                } else {
+                    list.add(start + "-" + end);
+                }
+                start = a[i];
+                end = start;
+            }
         }
 
-        int cars = group[4]
-                + group[3]
-                + group[2] / 2 + group[2] % 2;
-
-        int over = group[1] - group[3];
-
-        if (group[2] % 2 != 0) {
-            over -= 2;
+        if (end == start) {
+            list.add(Integer.toString(start));
+        } else if (end == start + 1) {
+            list.add(Integer.toString(start));
+            list.add(Integer.toString(end));
+        } else {
+            list.add(start + "-" + end);
         }
 
-        if (over > 0) {
-            cars += (over + 3) / 4;
+        for (String x : list) {
+            System.out.print(x + " ");
         }
-
-        System.out.println(cars);
     }
 
     static class InputReader {
