@@ -1,46 +1,28 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class EIUGIFTS {
-    static InputReader rd = new InputReader(System.in);
+public class EIDRAW {
+    static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int numberOfGifts = rd.nextInt();
-        long money = rd.nextLong();
+        int h = sc.nextInt();
 
-        int[] prices = new int[numberOfGifts];
-        for (int i = 0; i < numberOfGifts; i++) {
-            prices[i] = rd.nextInt();
+        int tang = 1;
+        for (int i = 0; i < h; i++) {
+            System.out.println(space(i) + "\\" +
+                    space((h - tang) * 2) + "/" +
+                    space(i * 2) + "\\" +
+                    space((h - tang) * 2) + "/" + space(i));
+            tang++;
         }
+    }
 
-        Arrays.sort(prices);
-
-        long maxTotal = -1;
-        int minDiff = Integer.MAX_VALUE;
-
-        int left = 0;
-        int right = prices.length - 1;
-
-        while (left < right) {
-            long total = prices[left] + prices[right];
-            int diff = prices[right] - prices[left];
-
-            if (total <= money) {
-                if (total > maxTotal || (total == maxTotal && diff < minDiff)) {
-                    maxTotal = total;
-                    minDiff = diff;
-                }
-                left++;
-            } else {
-                right--;
-            }
+    public static String space(int t) {
+        String s = "";
+        for (int i = 0; i < t; i++) {
+            s += " ";
         }
-
-        if (maxTotal == -1) {
-            System.out.println("-1 -1");
-        } else {
-            System.out.println(maxTotal + " " + minDiff);
-        }
+        return s;
     }
 
     static class InputReader {
