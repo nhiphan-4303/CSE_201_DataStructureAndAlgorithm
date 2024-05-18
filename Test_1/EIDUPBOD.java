@@ -1,37 +1,39 @@
 package Test_1;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 
-public class EI20213Q2 {
+public class EIDUPBOD {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
+    static DecimalFormat df = new DecimalFormat("00");
 
     public static void main(String[] args) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+
         int n = sc.nextInt();
-        long[] numbers = new long[n];
-
         for (int i = 0; i < n; i++) {
-            numbers[i] = sc.nextLong();
+
+            int day = sc.nextInt();
+            int month = sc.nextInt() * 100;
+            int year = sc.nextInt() * 10000;
+            int key = year + month + day;
+
+            countMap.put(key, countMap.getOrDefault(key, 0) + 1);
         }
 
-        Arrays.sort(numbers);
+        List<Integer> listDates = new ArrayList<>(countMap.keySet());
+        listDates.sort(null);
 
-        Map<Long, Integer> countMap = new HashMap<>();
-        for (long x : numbers) {
-            countMap.put(x, countMap.getOrDefault(x, 0) + 1);
+        for (int key : listDates) {
+            int year = key / 10000;
+            int month = (key % 10000) / 100;
+            int day = (key % 100);
+
+            sb.append(df.format(day) + "/" + df.format(month) + "/" + df.format(year) + " " + countMap.get(key) + "\n");
         }
-
-        List<Long> sortKey = new ArrayList<>(countMap.keySet());
-
-        sortKey.sort(null);
-
-        for (long x : sortKey) {
-            sb.append(x + " " + countMap.get(x) + "\n");
-        }
-
         System.out.println(sb);
-
     }
 
     static class InputReader {
