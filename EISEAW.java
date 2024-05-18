@@ -7,7 +7,7 @@ class EISEAW {
 
     public static void main(String[] args) {
         int n = sc.nextInt();
-        
+
         List<Employee> employees = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
@@ -27,13 +27,17 @@ class EISEAW {
 
             employees.add(new Employee(name, totalHours, (int) income));
         }
+       
 
         employees.sort((e1, e2) -> {
-            if (e2.income != e1.income) {
-                return e1.income - e2.income;
-            } else {
-                return e1.name.compareTo(e2.name);
+            int compare = Integer.compare(e1.income, e2.income);
+          
+            if (compare == 0) {
+                compare = e1.name.compareTo(e2.name);
             }
+
+            return compare;
+
         });
 
         for (Employee e : employees) {
