@@ -6,9 +6,11 @@ public class EICREDI2 {
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int n = sc.nextInt();
+        // tạo danh sách học sinh
         List<Student> studentList = new ArrayList<>();
 
+        int n = sc.nextInt();
+      
         for (int i = 0; i < n; i++) {
             String name = sc.next();
             int totalOfSubjects = sc.nextInt();
@@ -41,10 +43,14 @@ public class EICREDI2 {
         }
 
         public String addGradeAndGpa() {
+            //tạo thêm 1 string builder để lưu
             StringBuilder grades = new StringBuilder();
+
             int count = 0;
             int sumOfScores = 0;
             int gpa = 0;
+
+            //điều kiện xem có bao nhiêu môn pass
             for (int score : scores) {
                 if (score >= 50) {
                     grades.append(score).append(" ");
@@ -52,13 +58,24 @@ public class EICREDI2 {
                     sumOfScores += score;
                 }
             }
+
+            //điều kiện cho gpa
             if (count == 0) {
                 gpa = 0;
             } else {
                 gpa = sumOfScores / count;
             }
+
             grades.append(gpa);
             return grades.toString();
+        }
+
+        public void setTotalOfSubjects(int totalOfSubjects) {
+            this.totalOfSubjects = totalOfSubjects;
+        }
+
+        public int getTotalOfSubjects() {
+            return this.totalOfSubjects;
         }
 
     }

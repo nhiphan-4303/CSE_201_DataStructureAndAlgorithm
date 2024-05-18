@@ -1,63 +1,46 @@
 import java.util.*;
 import java.io.*;
 
-public class EICREDIT {
+class EISEAW {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
         int n = sc.nextInt();
-        List<Student> studentList = new ArrayList<>();
+        
+        List<Employee> employees = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             String name = sc.next();
-            int totalOfSubjects = sc.nextInt();
+            int wagePerH = sc.nextInt();
+            int days = sc.nextInt();
 
-            int[] score = new int[totalOfSubjects];
-            for (int j = 0; j < totalOfSubjects; j++) {
-                score[j] = sc.nextInt();
+            int totalHours = 0;
+            for (int j = 0; j < days; j++) {
+                totalHours += sc.nextInt();
             }
 
-            Student student = new Student(name, totalOfSubjects, score);
-            studentList.add(student);
+            int income = totalHours * wagePerH;
+            if (income >= 2000000) {
+                income *= 0.9;
+            }
+
+            employees.add(new Employee(name, totalHours, (int) income));
         }
 
-        for (Student s : studentList) {
-            sb.append(s.name + " " + s.calculateCredit() + "\n");
+        employees.sort((e1, e2) -> {
+            if (e2.income != e1.income) {
+                return e1.income - e2.income;
+            } else {
+                return e1.name.compareTo(e2.name);
+            }
+        });
+
+        for (Employee e : employees) {
+            sb.append(e.name + " " + e.totalHours + " " + e.income + "\n");
         }
 
         System.out.println(sb);
-    }
-
-    static class Student {
-        private String name;
-        private int totalOfSubjects;
-        private int[] scores;
-
-        public Student(String name, int totalOfSubjects, int[] scores) {
-            this.name = name;
-            this.totalOfSubjects = totalOfSubjects;
-            this.scores = scores;
-        }
-
-        public int calculateCredit() {
-            int credit = 0;
-            for (int score : scores) {
-                if (score >= 50) {
-                    credit += 4;
-                }
-            }
-
-            return credit;
-        }
-
-        public void setTotalOfSubjects(int totalOfSubjects) {
-            this.totalOfSubjects = totalOfSubjects;
-        }
-
-        public int getTotalOfSubjects() {
-            return this.totalOfSubjects;
-        }
 
     }
 
@@ -139,5 +122,17 @@ public class EICREDIT {
 
         }
 
+    }
+}
+
+class Employee {
+    String name;
+    int totalHours;
+    int income;
+
+    public Employee(String name, int totalHours, int income) {
+        this.name = name;
+        this.totalHours = totalHours;
+        this.income = income;
     }
 }
