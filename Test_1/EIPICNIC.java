@@ -1,58 +1,33 @@
+package Test_1;
 
 import java.io.*;
 import java.util.*;
 
-public class EIUPH014 {
+public class EIPICNIC {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        while (true) {
-            int n = sc.nextInt();
-
-            if (n == 0) {
-                break;
-            }
-
-            int[] a = new int[n];
-            for (int i = 0; i < n; i++) {
-                a[i] = sc.nextInt();
-            }
-
-            sb.append(countLoop(a) + "\n");
+        int n = sc.nextInt();
+        
+        int[] groups = new int[5];
+        for (int i = 0; i < n; i++) {
+            groups[sc.nextInt()]++;
         }
 
-        System.out.println(sb);
+        int cars = groups[4] + groups[3] + (groups[2] + 1) / 2;
 
-    }
+        int over = groups[1] - groups[3];
 
-    public static int countLoop(int[] a) {
-        int loop = 0;
-        while (!checkEqualResult(a)) {
-
-            int[] new_arr = new int[a.length];
-            for (int i = 0; i < a.length - 1; i++) {
-                new_arr[i] = Math.abs(a[i] - a[i + 1]);
-            }
-            new_arr[a.length - 1] = Math.abs(a[a.length - 1] - a[0]);
-
-            a = new_arr;
-
-            loop++;
-
-            if (loop > 1000)
-                return -1;
+        if (groups[2] % 2 != 0) {
+            over -= 2;
         }
-        return loop;
-    }
 
-    public static boolean checkEqualResult(int[] a) {
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != a[0]) {
-                return false;
-            }
+        if (over > 0) {
+            cars += (over + 3) / 4;
         }
-        return true;
+
+        System.out.println(cars);
     }
 
     static class InputReader {

@@ -1,58 +1,41 @@
+package Test_1;
 
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class EIUPH014 {
+public class EIUONCE {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        while (true) {
+        int t = sc.nextInt();
+        for (int i = 0; i < t; i++) {
+            Map<Integer, Integer> countMap = new HashMap<>();
+
             int n = sc.nextInt();
+            int[] numbers = new int[n];
 
-            if (n == 0) {
-                break;
+            for (int j = 0; j < n; j++) {
+                numbers[j] = sc.nextInt();
             }
 
-            int[] a = new int[n];
-            for (int i = 0; i < n; i++) {
-                a[i] = sc.nextInt();
+            Arrays.sort(numbers);
+
+            for (int x : numbers) {
+                countMap.put(x, countMap.getOrDefault(x, 0) + 1);
             }
 
-            sb.append(countLoop(a) + "\n");
+            for (int x : numbers) {
+                if (countMap.get(x) == 1) {
+                    sb.append(x + " ");
+                }
+            }
+
+            sb.append("\n");
+
         }
 
         System.out.println(sb);
-
-    }
-
-    public static int countLoop(int[] a) {
-        int loop = 0;
-        while (!checkEqualResult(a)) {
-
-            int[] new_arr = new int[a.length];
-            for (int i = 0; i < a.length - 1; i++) {
-                new_arr[i] = Math.abs(a[i] - a[i + 1]);
-            }
-            new_arr[a.length - 1] = Math.abs(a[a.length - 1] - a[0]);
-
-            a = new_arr;
-
-            loop++;
-
-            if (loop > 1000)
-                return -1;
-        }
-        return loop;
-    }
-
-    public static boolean checkEqualResult(int[] a) {
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != a[0]) {
-                return false;
-            }
-        }
-        return true;
     }
 
     static class InputReader {

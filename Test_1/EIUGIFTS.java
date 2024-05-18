@@ -1,52 +1,52 @@
-import java.util.*;
-import java.io.*;
+package Test_1;
 
-public class EIUPAGES {
+import java.io.*;
+import java.util.*;
+
+public class EIUGIFTS {
+
     static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
+        int numberOfPrices = sc.nextInt();
+        long money = sc.nextInt();
 
-        List<String> list = new ArrayList<>();
-        int numberOfPages = sc.nextInt();
-
-        int[] a = new int[numberOfPages];
-        for (int i = 0; i < numberOfPages; i++) {
-            a[i] = sc.nextInt();
+        int[] prices = new int[numberOfPrices];
+        for (int i = 0; i < numberOfPrices; i++) {
+            prices[i] = sc.nextInt();
         }
-        Arrays.sort(a);
 
-        int start = a[0];
-        int end = start;
+        Arrays.sort(prices);
 
-        for (int i = 1; i < a.length; i++) {
-            if (a[i] == end + 1) {
-                end = a[i];
-            } else {
-                if (end == start) {
-                    list.add(Integer.toString(start));
-                } else if (end == start + 1) {
-                    list.add(Integer.toString(start));
-                    list.add(Integer.toString(end));
-                } else {
-                    list.add(start + "-" + end);
+        long maxTotal = -1;
+        int minDiff = Integer.MAX_VALUE;
+
+        int left = 0;
+        int right = prices.length - 1;
+
+        // 10 40 50 50 60
+        while (left < right) {
+            long total = prices[right] + prices[left];
+            int diff = prices[right] - prices[left];
+
+            if (total <= money) {
+                if (total > maxTotal || (total == maxTotal && diff < minDiff)) {
+                    maxTotal = total;
+                    minDiff = diff;
                 }
-                start = a[i];
-                end = start;
+                left++;
+            } else {
+                right--;
             }
+
         }
 
-        if (end == start) {
-            list.add(Integer.toString(start));
-        } else if (end == start + 1) {
-            list.add(Integer.toString(start));
-            list.add(Integer.toString(end));
+        if (maxTotal == -1) {
+            System.out.println("-1 -1");
         } else {
-            list.add(start + "-" + end);
+            System.out.println(maxTotal + " " + minDiff);
         }
 
-        for (String x : list) {
-            System.out.print(x + " ");
-        }
     }
 
     static class InputReader {

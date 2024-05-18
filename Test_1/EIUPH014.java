@@ -1,3 +1,4 @@
+package Test_1;
 
 import java.io.*;
 import java.util.*;
@@ -30,13 +31,13 @@ public class EIUPH014 {
         int loop = 0;
         while (!checkEqualResult(a)) {
 
-            int[] new_arr = new int[a.length];
+            int[] b = new int[a.length];
             for (int i = 0; i < a.length - 1; i++) {
-                new_arr[i] = Math.abs(a[i] - a[i + 1]);
+                b[i] = Math.abs(a[i] - a[i + 1]);
             }
-            new_arr[a.length - 1] = Math.abs(a[a.length - 1] - a[0]);
+            b[a.length - 1] = Math.abs(a[a.length - 1] - a[0]);
 
-            a = new_arr;
+            a = b;
 
             loop++;
 
