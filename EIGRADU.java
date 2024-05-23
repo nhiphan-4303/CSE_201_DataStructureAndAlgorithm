@@ -82,87 +82,89 @@ class EIGRADU {
 
     }
 
-    static InputReader rd = new InputReader(System.in);
+    static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int numberOfStudents = rd.nextInt();
-        int numberOfCredits = rd.nextInt();
-        List<Student> students = new ArrayList<Student>();
+        List<Student> listStudents = new ArrayList<>();
+
+        int numberOfStudents = sc.nextInt();
+        int numberOfCredits = sc.nextInt();
 
         for (int i = 0; i < numberOfStudents; i++) {
-            int ID = rd.nextInt();
-            String name = rd.next();
-            int numberOfCourses = rd.nextInt();
+            int id = sc.nextInt();
+            String name = sc.next();
+            int numberOfCourses = sc.nextInt();
 
-            Student student = new Student(ID, name, numberOfCredits);
-            
+            Student s = new Student(id, name, numberOfCredits);
             for (int j = 0; j < numberOfCourses; j++) {
-                double grade = rd.nextDouble();
-                student.addGrade(grade);
+                double grade = sc.nextDouble();
+                s.addGrade(grade);
             }
-            students.add(student);
+
+            listStudents.add(s);
         }
 
-        students.sort((s1, s2) -> {
+        listStudents.sort((s1, s2) -> {
             int compare = Double.compare(s2.getAverage(), s1.getAverage());
             if (compare == 0) {
-                return Integer.compare(s1.ID, s2.ID);
+                return Integer.compare(s1.id, s2.id);
             }
             return compare;
         });
 
-        for (Student student : students) {
-            if (student.isGraduate()) {
-                sb.append(student + "\n");
+        for (Student s : listStudents) {
+            if (s.isGraduate()) {
+                sb.append(s + "\n");
             }
         }
+
         System.out.print(sb);
+
     }
 
-static class Student {
-        private int ID;
+    public static class Student {
+        private int id;
         private String name;
         private int numberOfCredits;
+        private double grade;
         private double totalGrade;
         private double average;
-        private int passedCredits;
+        private double passCredit;
 
-        ArrayList<Double> listGrades = new ArrayList<Double>();
+        List<Double> listGrades = new ArrayList<>();
 
-        public Student(int ID, String name, int numberOfCredits) {
-            this.ID = ID;
+        public Student(int id, String name, int numberOfCredits) {
+            this.id = id;
             this.name = name;
             this.numberOfCredits = numberOfCredits;
-            this.totalGrade = 0;
-            this.average = 0;
-            this.passedCredits = 0;
         }
 
         public void addGrade(double grade) {
             listGrades.add(grade);
             if (grade >= 50) {
-                passedCredits += 4;
-                totalGrade += grade;
-            }
-        }
-
-        public double getAverage() {
-            if (passedCredits > 0) {
-                return Math.floor(totalGrade / (passedCredits / 4));
-            } else {
-                return 0;
+                this.passCredit += 4;
+                this.totalGrade += grade;
             }
         }
 
         public boolean isGraduate() {
-            return passedCredits >= numberOfCredits;
+            return passCredit >= numberOfCredits;
+        }
+
+        public double getAverage() {
+            double average = 0;
+            if (isGraduate()) {
+                average = Math.floor(totalGrade / (passCredit / 4));
+            }
+            return average;
         }
 
         @Override
         public String toString() {
-            return ID + " " + name + " " + (int) getAverage();
+            return id + " " + name + " " + (int) getAverage();
         }
+
     }
 
 }
