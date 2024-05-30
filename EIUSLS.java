@@ -16,13 +16,14 @@ public class EIUSLS {
             String studentName = sc.next();
             int totalSubjects = sc.nextInt();
 
-            Student student = new Student(studentName, i);
+            Student student = new Student(studentName, i, totalSubjects);
 
             for (int j = 0; j < totalSubjects; j++) {
                 int grade = sc.nextInt();
-                student.addGrade(grade, totalSubjects);
+                student.addGrade(grade);
             }
 
+            student.calculateAverage();
             students.add(student);
         }
 
@@ -50,15 +51,19 @@ public class EIUSLS {
         private int totalGrade;
         private double average;
 
-        public Student(String name, int i) {
+        public Student(String name, int index, int totalSubjects) {
             this.name = name;
+            this.index = index;
+            this.totalSubjects = totalSubjects;
         }
 
-        public void addGrade(int grade, int totalSubjects) {
+        public void addGrade(int grade) {
             totalGrade += grade;
-            average = (double) totalGrade / (double) totalSubjects;
         }
 
+        public void calculateAverage() {
+            this.average = (double) totalGrade / totalSubjects;
+        }
     }
 
     static class InputReader {

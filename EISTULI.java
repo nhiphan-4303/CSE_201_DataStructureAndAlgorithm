@@ -1,144 +1,123 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class EISTULI {
-    static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
+    static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
-        List<Student> students = new ArrayList<>();
-
         int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        List<Student> listStudents = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            String studentName = sc.next();
-            int totalSubjects = sc.nextInt();
-            Student student = new Student(studentName, i);
+            int id = sc.nextInt();
+            String name = sc.next();
+            int courses = sc.nextInt();
 
-            for (int j = 0; j < totalSubjects; j++) {
-                int grade = sc.nextInt();
-                student.addGrade(grade);
+            Student student = new Student(i, id, name);
+
+            for (int j = 0; j < courses; j++) {
+                int score = sc.nextInt();
+
+                if (score >= 50) {
+                    student.calculateAverage(score);
+                }
             }
-
-            students.add(student);
+            listStudents.add(student);
         }
 
-        students.sort((s1, s2) -> {
-            int compare = Double.compare(s2.average, s1.average);
+        listStudents.sort((s1, s2) -> {
+            int compare = Double.compare(s2.avg, s1.avg);
             if (compare == 0) {
                 compare = Integer.compare(s1.index, s2.index);
             }
             return compare;
         });
 
-        int scholarship = Math.min(2, students.size());
+        for (int i = 0; i < k; i++) {
+            Student s = listStudents.get(i);
+            sb.append(s.id + " " + s.name + " " +
+                    Math.round(s.avg) + " " + s.credits + "\n");
 
-        for (int i = 0; i < scholarship; i++) {
-            sb.append(students.get(i).name).append("\n");
+            if (n != k && i < k - 1 && listStudents.get(i + 1).avg == listStudents.get(k).avg) {
+                break;
+            }
         }
+        System.out.println(sb);
 
-        System.out.print(sb);
     }
 
     static class Student {
-        private String name;
-        private int totalGrade;
-        private int totalSubjects;
-        private int index;
-        private double average;
+        int index;
+        long id;
+        double totalScore;
+        int totalSubject;
+        String name;
+        double avg;
+        int credits;
 
-        public Student(String name, int i) {
+        public Student(int index, long id, String name) {
+            this.index = index;
+            this.id = id;
             this.name = name;
-            this.totalGrade = 0;
-            this.totalSubjects = 0;
-            this.average = 0.0;
         }
 
-        public void addGrade(int grade) {
-            totalGrade += grade;
-            totalSubjects++;
-            average = (double) totalGrade / (double) totalSubjects;
+        public void calculateAverage(double score) {
+            totalScore += score;
+            totalSubject++;
+            avg = totalScore / totalSubject;
+            credits += 4;
         }
 
     }
 
     static class InputReader {
-
         StringTokenizer tokenizer;
-
         BufferedReader reader;
-
         String token;
-
         String temp;
 
         public InputReader(InputStream stream) {
-
             tokenizer = null;
-
             reader = new BufferedReader(new InputStreamReader(stream));
-
         }
 
         public InputReader(FileInputStream stream) {
-
             tokenizer = null;
-
             reader = new BufferedReader(new InputStreamReader(stream));
-
         }
 
         public String nextLine() throws IOException {
-
             return reader.readLine();
-
         }
 
         public String next() {
-
             while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-
                 try {
-
                     if (temp != null) {
-
                         tokenizer = new StringTokenizer(temp);
-
                         temp = null;
-
                     } else {
-
                         tokenizer = new StringTokenizer(reader.readLine());
-
                     }
-
                 } catch (IOException e) {
-
                 }
-
             }
-
             return tokenizer.nextToken();
-
         }
 
         public double nextDouble() {
-
             return Double.parseDouble(next());
-
         }
 
         public int nextInt() {
-
             return Integer.parseInt(next());
-
         }
 
         public long nextLong() {
-
             return Long.parseLong(next());
-
         }
-
     }
 }
