@@ -127,7 +127,6 @@ class EIGRADU {
         private int id;
         private String name;
         private int numberOfCredits;
-        private double grade;
         private double totalGrade;
         private double average;
         private double passCredit;
@@ -138,6 +137,7 @@ class EIGRADU {
             this.id = id;
             this.name = name;
             this.numberOfCredits = numberOfCredits;
+            this.average=0.0;
         }
 
         public void addGrade(double grade) {
@@ -153,11 +153,10 @@ class EIGRADU {
         }
 
         public double getAverage() {
-            double average = 0;
             if (isGraduate()) {
-                average = Math.floor(totalGrade / (passCredit / 4));
+                this.average = Math.floor(totalGrade / (passCredit / 4));
             }
-            return average;
+            return this.average;
         }
 
         @Override
