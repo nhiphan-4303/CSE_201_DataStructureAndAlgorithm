@@ -1,161 +1,131 @@
 import java.io.*;
 import java.util.*;
 
-public class EIUGRDSA2 {
-    static class InputReader {
-
-        StringTokenizer tokenizer;
-
-        BufferedReader reader;
-
-        String token;
-
-        String temp;
-
-        public InputReader(InputStream stream) {
-
-            tokenizer = null;
-
-            reader = new BufferedReader(new InputStreamReader(stream));
-
-        }
-
-        public InputReader(FileInputStream stream) {
-
-            tokenizer = null;
-
-            reader = new BufferedReader(new InputStreamReader(stream));
-
-        }
-
-        public String nextLine() throws IOException {
-
-            return reader.readLine();
-
-        }
-
-        public String next() {
-
-            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-
-                try {
-
-                    if (temp != null) {
-
-                        tokenizer = new StringTokenizer(temp);
-
-                        temp = null;
-
-                    } else {
-
-                        tokenizer = new StringTokenizer(reader.readLine());
-
-                    }
-
-                } catch (IOException e) {
-
-                }
-
-            }
-
-            return tokenizer.nextToken();
-
-        }
-
-        public double nextDouble() {
-
-            return Double.parseDouble(next());
-
-        }
-
-        public int nextInt() {
-
-            return Integer.parseInt(next());
-
-        }
-
-        public long nextLong() {
-
-            return Long.parseLong(next());
-
-        }
-
-    }
-
+class EIUGRDSA2 {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        Map<Integer, Student> studentMap = new HashMap<>();
-        int n = sc.nextInt();
-        int p = sc.nextInt();
-        int m = sc.nextInt();
+        int n = sc.nextInt(); // số lượng sinh viên
+        int p = sc.nextInt(); // số lượng bài tập
+        long m = sc.nextLong(); // số lần nộp bài
 
-        int[] ids = new int[n];
+        Map<Long, Student> studentMap = new TreeMap<>();
+
         for (int i = 0; i < n; i++) {
-            ids[i] = sc.nextInt();
+            long id = sc.nextLong();
+            studentMap.put(id, new Student(id));
         }
 
-        int[] problems = new int[p];
+        Set<Long> problems = new HashSet<>();
         for (int j = 0; j < p; j++) {
-            problems[j] = sc.nextInt();
+            problems.add(sc.nextLong());
         }
 
         for (int k = 0; k < m; k++) {
-            int studentId = sc.nextInt();
-            int exerciseCode = sc.nextInt();
+            long studentId = sc.nextLong();
+            long exerciseCode = sc.nextLong();
             int grade = sc.nextInt();
 
             Student student = studentMap.get(studentId);
-            if (student == null) {
-                student = new Student(studentId);
-                studentMap.put(studentId, student);
+            if (student != null && problems.contains(exerciseCode)) {
+                student.addGrade(exerciseCode, grade);
             }
-
-            student.addGrade(exerciseCode, grade);
         }
 
-        Arrays.sort(ids);
+        List<Student> printList = new ArrayList<>(studentMap.values());
 
-        for (int id : ids) {
-            Student student = studentMap.get(id);
-            if (student != null) {
-                sb.append(id + " " + student.calculateAvr(p) + " " + student.mapGrade.keySet() + "\n");
-            } else {
-                sb.append(id + " 0\n");
+        printList.sort((s1, s2) -> {
+            int compare = Integer.compare(s2.calculateAvr(p), s1.calculateAvr(p));
+            if (compare == 0) {
+                compare = Long.compare(s1.validSubmissions, s2.validSubmissions);
             }
+            if (compare == 0) {
+                compare = Long.compare(s1.id, s2.id);
+            }
+            return compare;
+        });
+
+        for (Student student : printList) {
+            sb.append(student.id).append(" ")
+                    .append(student.calculateAvr(p)).append(" ")
+                    .append(student.validSubmissions).append("\n");
         }
 
         System.out.print(sb);
     }
 
     public static class Student {
-        int id;
-        double avr;
+        long id;
+        int avr;
+        long validSubmissions;
 
-        public Student(int id) {
+        Map<Long, Integer> gradeMap = new HashMap<>();
+
+        public Student(long id) {
             this.id = id;
+            this.validSubmissions = 0;
         }
 
-        Map<Integer, Integer> mapGrade = new HashMap<>();
-
-        public void addGrade(int exerciseCode, int grade) {
-            mapGrade.merge(exerciseCode, grade, Math::max);
+        public void addGrade(long exerciseCode, int grade) {
+            gradeMap.merge(exerciseCode, grade, Math::max);
+            validSubmissions++;
         }
-
-      
 
         public int calculateAvr(int numExercise) {
             int sum = 0;
-            for (int grade : mapGrade.values()) {
+            for (int grade : gradeMap.values()) {
                 sum += grade;
             }
-            return sum / numExercise;
+            return this.avr = sum / numExercise;
+        }
+    }
+
+    static class InputReader {
+        StringTokenizer tokenizer;
+        BufferedReader reader;
+        String temp;
+
+        public InputReader(InputStream stream) {
+            tokenizer = null;
+            reader = new BufferedReader(new InputStreamReader(stream));
         }
 
-        @Override
-        public String toString() {
-            return id + " " + avr;
+        public InputReader(FileInputStream stream) {
+            tokenizer = null;
+            reader = new BufferedReader(new InputStreamReader(stream));
+        }
+
+        public String nextLine() throws IOException {
+            return reader.readLine();
+        }
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    if (temp != null) {
+                        tokenizer = new StringTokenizer(temp);
+                        temp = null;
+                    } else {
+                        tokenizer = new StringTokenizer(reader.readLine());
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        public double nextDouble() {
+            return Double.parseDouble(next());
+        }
+
+        public int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        public long nextLong() {
+            return Long.parseLong(next());
         }
     }
 }

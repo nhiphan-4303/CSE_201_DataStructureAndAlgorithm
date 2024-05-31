@@ -1,73 +1,60 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-class EIUGRDSA {
+public class EIUBISEA {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int n = sc.nextInt(); // số lượng sinh viên
-        int p = sc.nextInt(); // số lượng bài tập
-        int m = sc.nextInt(); // số lần nộp bài
+        int n = sc.nextInt(); // số phần tử trong mảng
+        int m = sc.nextInt(); // số câu lệnh cần kiểm tra
+        int[] arr = new int[n];
+        int[] sentence = new int[m];
 
-        Map<Integer, Student> studentMap = new TreeMap<>();
-
+        // nhập phần tử trong mảng
         for (int i = 0; i < n; i++) {
-            int id = sc.nextInt();
-            studentMap.put(id, new Student(id));
+            arr[i] = sc.nextInt();
         }
 
-        Set<Integer> problems = new HashSet<>();
-        for (int j = 0; j < p; j++) {
-            problems.add(sc.nextInt());
+        // nhập các câu lệnh kiểm tra
+        for (int i = 0; i < m; i++) {
+            sentence[i] = sc.nextInt();
         }
 
-        for (int k = 0; k < m; k++) {
-            int studentId = sc.nextInt();
-            int exerciseCode = sc.nextInt();
-            int grade = sc.nextInt();
+        Arrays.sort(arr); // sắp xếp phần tử trong mảng tăng dần
 
-            Student student = studentMap.get(studentId);
-            if (student != null) {
-                student.addGrade(exerciseCode, grade);
-            }
+        for (int i = 0; i < m; i++) {
+            int index = binarySearch(arr, sentence[i], 0, n - 1);
+            sb.append(index + " ");
         }
 
-        for (Student student : studentMap.values()) {
-            sb.append(student.id).append(" ")
-                    .append(student.calculateAvr(p)).append(" ")
-                    .append("\n");
-        }
-
-        System.out.print(sb);
+        System.out.println(sb);
     }
 
-    public static class Student {
-        int id;
-        double avr;
+    public static int binarySearch(int[] array, int key, int left, int right) {
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
 
-        public Student(int id) {
-            this.id = id;
-        }
-
-        Map<Integer, Integer> gradeMap = new HashMap<>();
-
-        public void addGrade(int exerciseCode, int grade) {
-            gradeMap.merge(exerciseCode, grade, Math::max);
-        }
-
-        public int calculateAvr(int numExercise) {
-            int sum = 0;
-            for (int grade : gradeMap.values()) {
-                sum += grade;
+            if (array[mid] < key) {
+                left = mid;
+            } else {
+                right = mid;
             }
-            return sum / numExercise;
+        }
+
+        if (array[left] == key) {
+            return left;
+        } else if (array[right] == key) {
+            return right;
+        } else {
+            return -1;
         }
     }
 
     static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
+        String token;
         String temp;
 
         public InputReader(InputStream stream) {
@@ -94,7 +81,7 @@ class EIUGRDSA {
                         tokenizer = new StringTokenizer(reader.readLine());
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
             return tokenizer.nextToken();

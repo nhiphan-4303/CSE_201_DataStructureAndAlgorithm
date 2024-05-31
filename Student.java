@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-class EIUGRDSA {
+class EIUGRDSA2 {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
@@ -10,58 +10,76 @@ class EIUGRDSA {
         int p = sc.nextInt(); // số lượng bài tập
         int m = sc.nextInt(); // số lần nộp bài
 
-        Map<Integer, Student> studentMap = new TreeMap<>();
+        Map<Long, Student> studentMap = new TreeMap<>();
 
         for (int i = 0; i < n; i++) {
-            int id = sc.nextInt();
+            long id = sc.nextLong();
             studentMap.put(id, new Student(id));
         }
 
-        Set<Integer> problems = new HashSet<>();
+        Set<Long> problems = new HashSet<>();
         for (int j = 0; j < p; j++) {
-            problems.add(sc.nextInt());
+            problems.add(sc.nextLong());
         }
 
         for (int k = 0; k < m; k++) {
-            int studentId = sc.nextInt();
-            int exerciseCode = sc.nextInt();
+            long studentId = sc.nextLong();
+            long exerciseCode = sc.nextLong();
             int grade = sc.nextInt();
 
             Student student = studentMap.get(studentId);
-            if (student != null) {
+            if (student != null && problems.contains(exerciseCode)) {
                 student.addGrade(exerciseCode, grade);
             }
         }
 
-        for (Student student : studentMap.values()) {
+        List<Student> printList = new ArrayList<>(studentMap.values());
+
+        printList.sort((s1, s2) -> {
+            int compare = Integer.compare(s2.calculateAvr(), s1.calculateAvr());
+            if (compare == 0) {
+                compare = Integer.compare(s1.validSubmissions, s2.validSubmissions);
+            }
+            if (compare == 0) {
+                compare = Long.compare(s1.id, s2.id);
+            }
+            return compare;
+        });
+
+        for (Student student : printList) {
             sb.append(student.id).append(" ")
-                    .append(student.calculateAvr(p)).append(" ")
-                    .append("\n");
+              .append(student.calculateAvr()).append(" ")
+              .append(student.validSubmissions).append("\n");
         }
 
         System.out.print(sb);
     }
 
     public static class Student {
-        int id;
-        double avr;
+        long id;
+        int avr;
+        int totalScore;
+        int validSubmissions;
 
-        public Student(int id) {
+        Map<Long, Integer> gradeMap = new HashMap<>();
+
+        public Student(long id) {
             this.id = id;
+            this.totalScore = 0;
+            this.validSubmissions = 0;
         }
 
-        Map<Integer, Integer> gradeMap = new HashMap<>();
-
-        public void addGrade(int exerciseCode, int grade) {
+        public void addGrade(long exerciseCode, int grade) {
             gradeMap.merge(exerciseCode, grade, Math::max);
+            validSubmissions++;
         }
 
-        public int calculateAvr(int numExercise) {
+        public int calculateAvr() {
             int sum = 0;
             for (int grade : gradeMap.values()) {
                 sum += grade;
             }
-            return sum / numExercise;
+            return this.avr = validSubmissions > 0 ? sum / validSubmissions : 0;
         }
     }
 
