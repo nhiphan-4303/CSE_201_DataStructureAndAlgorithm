@@ -2,6 +2,61 @@ import java.io.*;
 import java.util.*;
 
 public class EITASKDIS {
+    static StringBuilder sb = new StringBuilder();
+    static InputReader sc = new InputReader(System.in);
+
+    public static void main(String[] args) {
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+
+        int[] tasks = new int[m];
+        for (int i = 0; i < m; i++) {
+            tasks[i] = sc.nextInt();
+        }
+
+        Arrays.sort(tasks);
+
+        PriorityQueue<Person> pq = new PriorityQueue<>((p1, p2) -> {
+            int compare = Long.compare(p1.totalHours, p2.totalHours);
+            if (compare == 0) {
+                compare = Integer.compare(p1.index, p2.index);
+            }
+            return compare;
+        });
+        
+        List<Person> personList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            Person person = new Person(i);
+            pq.add(person);
+            personList.add(person);
+        }
+
+        for (int i = m - 1; i >= 0; i--) {
+            Person person = new Person(i);
+            person = pq.poll();
+            person.totalHours += tasks[i];
+            pq.add(person);
+        }
+        for (Person p : personList) {
+            sb.append(p);
+        }
+        System.out.println(sb);
+    }
+
+    static class Person {
+        int index;
+        long totalHours;
+
+        public Person(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public String toString() {
+            return this.totalHours + " ";
+        }
+    }
+
     static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
@@ -47,61 +102,6 @@ public class EITASKDIS {
 
         public long nextLong() {
             return Long.parseLong(next());
-        }
-    }
-
-    static StringBuilder sb = new StringBuilder();
-    static InputReader sc = new InputReader(System.in);
-
-    public static void main(String[] args) {
-        PriorityQueue<Worker> listWorkers = new PriorityQueue<>((w1, w2) -> {
-            int compare = Long.compare(w1.totalTime, w2.totalTime);
-            if (compare == 0) {
-                compare = w1.id - w2.id;
-            }
-            return compare;
-        });
-
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-
-        for (int id = 0; id < n; id++) {
-            Worker worker = new Worker(id);
-            listWorkers.add(worker);
-        }
-
-        int[] tasks = new int[m];
-        for (int i = 0; i < m; i++) {
-            tasks[i] = sc.nextInt();
-        }
-
-        Arrays.sort(tasks);
-
-        for (int i = m - 1; i >= 0; i--) {
-            Worker worker = listWorkers.poll();
-            worker.totalTime += tasks[i];
-            listWorkers.add(worker);
-        }
-
-        long[] result = new long[n];
-        while (!listWorkers.isEmpty()) {
-            Worker worker = listWorkers.poll();
-            result[worker.id] = worker.totalTime;
-        }
-
-        for (long time : result) {
-            sb.append(time).append(" ");
-        }
-        System.out.println(sb);
-    }
-
-    static class Worker {
-        int id;
-        long totalTime;
-
-        public Worker(int id) {
-            this.id = id;
-            this.totalTime = 0;
         }
     }
 }

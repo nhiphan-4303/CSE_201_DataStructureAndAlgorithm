@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class aReader {
+public class READER {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
