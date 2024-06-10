@@ -12,7 +12,7 @@ public class EIUMERSORT {
             arr[i] = sc.nextInt();
         }
 
-        mergeSort(arr, 0, arr.length - 1);
+        mergeSort(arr, 0, n - 1);
         print(arr);
     }
 

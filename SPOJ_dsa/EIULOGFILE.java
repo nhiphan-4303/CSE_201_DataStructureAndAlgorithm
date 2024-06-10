@@ -1,63 +1,33 @@
 import java.util.*;
 import java.io.*;
 
-class EISEAW {
-
+class EIULOGFILE {
     static InputReader sc = new InputReader(System.in);
-    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
         int n = sc.nextInt();
-
-        List<Employee> employees = new ArrayList<>();
+        long[] timestamps = new long[n];
 
         for (int i = 0; i < n; i++) {
-            String name = sc.next();
-            int wagePerH = sc.nextInt();
-            int days = sc.nextInt();
+            long timestamp = sc.nextLong();
 
-            int totalHours = 0;
-            for (int j = 0; j < days; j++) {
-                totalHours += sc.nextInt();
-            }
-
-            int income = totalHours * wagePerH;
-            if (income >= 2000000) {
-                income *= 0.9;
-            }
-
-            employees.add(new Employee(name, totalHours, (int) income));
+            timestamps[i] = timestamp * 2;
         }
 
-        employees.sort((e1, e2) -> {
-            int compare = Integer.compare(e1.income, e2.income);
+        Arrays.sort(timestamps);
 
-            if (compare == 0) {
-                compare = e1.name.compareTo(e2.name);
+        long count = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            long limitTime = timestamps[i] + 1200001;
+            int index = Arrays.binarySearch(timestamps, i + 1, n, limitTime);
+            if (index < 0) {
+                index = -index - 1;
             }
-
-            return compare;
-
-        });
-
-        for (Employee e : employees) {
-            sb.append(e.name + " " + e.totalHours + " " + e.income + "\n");
+            count += index - i - 1;
         }
 
-        System.out.println(sb);
-
-    }
-
-    static class Employee {
-        String name;
-        int totalHours;
-        int income;
-
-        public Employee(String name, int totalHours, int income) {
-            this.name = name;
-            this.totalHours = totalHours;
-            this.income = income;
-        }
+        System.out.println(count);
     }
 
     static class InputReader {

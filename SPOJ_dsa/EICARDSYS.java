@@ -1,62 +1,51 @@
 import java.util.*;
 import java.io.*;
+import java.text.*;
 
-class EISEAW {
+class EICARDSYS {
 
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
+    static DecimalFormat df = new DecimalFormat("#.##");
 
     public static void main(String[] args) {
         int n = sc.nextInt();
-
-        List<Employee> employees = new ArrayList<>();
+        Map<String, Customer> mapCustomer = new HashMap<>();
+        double totalDiscount = 0;
 
         for (int i = 0; i < n; i++) {
-            String name = sc.next();
-            int wagePerH = sc.nextInt();
-            int days = sc.nextInt();
+            String id = sc.next();
+            double price = sc.nextDouble();
 
-            int totalHours = 0;
-            for (int j = 0; j < days; j++) {
-                totalHours += sc.nextInt();
+            Customer customer = mapCustomer.getOrDefault(id, new Customer(id));
+            double previousPurchase = customer.totalPurchase;
+            customer.totalPurchase += price;
+
+            mapCustomer.put(id, customer);
+
+            if (previousPurchase < 1_000_000) {
+            } else if (previousPurchase < 20_000_000) {
+                totalDiscount += price * 0.02;
+            } else if (previousPurchase < 50_000_000) {
+                totalDiscount += price * 0.03;
+            } else if (previousPurchase < 200_000_000) {
+                totalDiscount += price * 0.05;
+            } else {
+                totalDiscount += price * 0.07;
             }
-
-            int income = totalHours * wagePerH;
-            if (income >= 2000000) {
-                income *= 0.9;
-            }
-
-            employees.add(new Employee(name, totalHours, (int) income));
         }
-
-        employees.sort((e1, e2) -> {
-            int compare = Integer.compare(e1.income, e2.income);
-
-            if (compare == 0) {
-                compare = e1.name.compareTo(e2.name);
-            }
-
-            return compare;
-
-        });
-
-        for (Employee e : employees) {
-            sb.append(e.name + " " + e.totalHours + " " + e.income + "\n");
-        }
-
+        sb.append(df.format(totalDiscount));
         System.out.println(sb);
 
     }
 
-    static class Employee {
-        String name;
-        int totalHours;
-        int income;
+    static class Customer {
+        double totalPurchase;
+        String id;
 
-        public Employee(String name, int totalHours, int income) {
-            this.name = name;
-            this.totalHours = totalHours;
-            this.income = income;
+        public Customer(String id) {
+            this.id = id;
+            this.totalPurchase = 0.0;
         }
     }
 
