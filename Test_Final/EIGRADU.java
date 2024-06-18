@@ -37,7 +37,7 @@ public class EIGRADU {
 
         for (Student s : studentList) {
             if (s.totalCredit >= credit) {
-                sb.append(s.id + " " + s.name + " " + (long) Math.floor(s.gpa)  + "\n");
+                sb.append(s.id + " " + s.name + " " + s.gpa + "\n");
             }
         }
 
@@ -48,10 +48,9 @@ public class EIGRADU {
 
         long id;
         String name;
-        int totalPassCoures;
         long totalCredit;
-        double totalGrade;
-        double gpa;
+        long totalGrade;
+        long gpa;
 
         public Student(long id, String name) {
             this.id = id;
@@ -59,11 +58,9 @@ public class EIGRADU {
         }
 
         public void calculateCreditAndGpa(double grade) {
-            totalPassCoures++;
             totalCredit += 4;
             totalGrade += grade;
-            gpa = totalGrade / totalPassCoures;
+            gpa = totalGrade / (totalCredit / 4);
         }
-
     }
 }

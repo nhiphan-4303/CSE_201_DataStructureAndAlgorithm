@@ -1,7 +1,9 @@
+
 import java.io.*;
 import java.util.*;
 
 class EIGRADU {
+
     static class InputReader {
 
         StringTokenizer tokenizer;
@@ -86,84 +88,60 @@ class EIGRADU {
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        List<Student> listStudents = new ArrayList<>();
+        List<Student> studentList = new ArrayList<>();
 
-        int numberOfStudents = sc.nextInt();
-        int numberOfCredits = sc.nextInt();
+        int n = sc.nextInt();
+        int credit = sc.nextInt();
 
-        for (int i = 0; i < numberOfStudents; i++) {
-            int id = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            long id = sc.nextLong();
             String name = sc.next();
-            int numberOfCourses = sc.nextInt();
 
-            Student s = new Student(id, name, numberOfCredits);
-            for (int j = 0; j < numberOfCourses; j++) {
+            Student student = new Student(id, name);
+            int course = sc.nextInt();
+            for (int j = 0; j < course; j++) {
                 double grade = sc.nextDouble();
-                s.addGrade(grade);
+                if (grade >= 50) {
+                    student.calculateCreditAndGpa(grade);
+                }
             }
-
-            listStudents.add(s);
+            studentList.add(student);
         }
-
-        listStudents.sort((s1, s2) -> {
-            int compare = Double.compare(s2.getAverage(), s1.getAverage());
+        studentList.sort((s1, s2) -> {
+            int compare = Double.compare(s2.gpa, s1.gpa);
             if (compare == 0) {
-                return Integer.compare(s1.id, s2.id);
+                return Long.compare(s1.id, s2.id);
             }
             return compare;
         });
 
-        for (Student s : listStudents) {
-            if (s.isGraduate()) {
-                sb.append(s + "\n");
+        for (Student s : studentList) {
+            if (s.totalCredit >= credit) {
+                sb.append(s.id + " " + s.name + " " + s.gpa + "\n");
             }
         }
 
-        System.out.print(sb);
-
+        System.out.println(sb);
     }
 
-    public static class Student {
-        private int id;
-        private String name;
-        private int numberOfCredits;
-        private double totalGrade;
-        private double average;
-        private double passCredit;
+    static public class Student {
 
-        List<Double> listGrades = new ArrayList<>();
+        long id;
+        String name;
+        long totalCredit;
+        long totalGrade;
+        long gpa;
 
-        public Student(int id, String name, int numberOfCredits) {
+        public Student(long id, String name) {
             this.id = id;
             this.name = name;
-            this.numberOfCredits = numberOfCredits;
-            this.average=0.0;
         }
 
-        public void addGrade(double grade) {
-            listGrades.add(grade);
-            if (grade >= 50) {
-                this.passCredit += 4;
-                this.totalGrade += grade;
-            }
+        public void calculateCreditAndGpa(double grade) {
+            totalCredit += 4;
+            totalGrade += grade;
+            gpa = totalGrade / (totalCredit / 4);
         }
-
-        public boolean isGraduate() {
-            return passCredit >= numberOfCredits;
-        }
-
-        public double getAverage() {
-            if (isGraduate()) {
-                this.average = Math.floor(totalGrade / (passCredit / 4));
-            }
-            return this.average;
-        }
-
-        @Override
-        public String toString() {
-            return id + " " + name + " " + (int) getAverage();
-        }
-
     }
 
 }
