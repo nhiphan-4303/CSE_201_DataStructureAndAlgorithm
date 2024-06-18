@@ -7,58 +7,43 @@ public class EICREDIT {
 
     public static void main(String[] args) {
         int n = sc.nextInt();
-        List<Student> studentList = new ArrayList<>();
+
+        List<Student> listStudents = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             String name = sc.next();
-            int totalOfSubjects = sc.nextInt();
+            int course = sc.nextInt();
 
-            int[] score = new int[totalOfSubjects];
-            for (int j = 0; j < totalOfSubjects; j++) {
-                score[j] = sc.nextInt();
-            }
+            Student student = new Student(name);
 
-            Student student = new Student(name, totalOfSubjects, score);
-            studentList.add(student);
-        }
-
-        for (Student s : studentList) {
-            sb.append(s.name + " " + s.calculateCredit() + "\n");
-        }
-
-        System.out.println(sb);
-    }
-
-    static class Student {
-        private String name;
-        private int totalOfSubjects;
-        private int[] scores;
-
-        public Student(String name, int totalOfSubjects, int[] scores) {
-            this.name = name;
-            this.totalOfSubjects = totalOfSubjects;
-            this.scores = scores;
-        }
-
-        public int calculateCredit() {
-            int credit = 0;
-            for (int score : scores) {
-                if (score >= 50) {
-                    credit += 4;
+            for (int j = 0; j < course; j++) {
+                int grade = sc.nextInt();
+                if (grade >= 50) {
+                    student.calculateCredit(grade);
                 }
             }
 
-            return credit;
+            listStudents.add(student);
         }
 
-        public void setTotalOfSubjects(int totalOfSubjects) {
-            this.totalOfSubjects = totalOfSubjects;
+        for (Student s : listStudents) {
+            sb.append(s.name + " " + s.totalCredit + "\n");
+        }
+        System.out.println(sb);
+    }
+
+    static public class Student {
+        String name;
+        int totalCredit;
+
+        public Student(String name) {
+            this.name = name;
+            this.totalCredit = 0;
         }
 
-        public int getTotalOfSubjects() {
-            return this.totalOfSubjects;
+        public void calculateCredit(int grade) {
+            this.totalCredit += 4;
         }
-
     }
 
     static class InputReader {

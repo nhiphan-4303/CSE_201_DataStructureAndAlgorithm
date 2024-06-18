@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class EIUGRADE {
@@ -14,14 +15,11 @@ public class EIUGRADE {
             long studentId = sc.nextLong();
             long subjectCode = sc.nextLong();
             double grade = sc.nextDouble();
+
+            studentMap.putIfAbsent(studentId, new Student(studentId));
+
             Student student = studentMap.get(studentId);
-
-            if (student == null) {
-                student = new Student(studentId);
-                studentMap.put(studentId, student);
-            }
-
-            student.addGrade(subjectCode, grade);
+            student.addGrade(grade);
         }
 
         List<Student> students = new ArrayList<Student>(studentMap.values());
@@ -35,14 +33,14 @@ public class EIUGRADE {
         });
 
         for (Student s : students) {
-            sb.append(s).append("\n");
+            sb.append(s.id).append(" ").append(String.format("%.3f", s.average)).append("\n");
         }
 
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
     static class Student {
-        private long id;
+        long id;
         double totalGrade;
         int totalSubject;
         double average;
@@ -51,7 +49,7 @@ public class EIUGRADE {
             this.id = id;
         }
 
-        public void addGrade(long subjectCode, double grade) {
+        public void addGrade(double grade) {
             totalGrade += grade;
             totalSubject++;
             average = totalGrade / totalSubject;
