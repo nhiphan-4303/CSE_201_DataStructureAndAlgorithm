@@ -2,15 +2,15 @@ package Test_Final;
 
 import java.util.*;
 
-public class EIUGRDSA {
+public class EIUGRDSA2 {
 
     static Scanner sc = new Scanner(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int n = sc.nextInt(); // student
-        int p = sc.nextInt(); // ex code
-        int m = sc.nextInt(); // submission
+        int n = sc.nextInt();// student
+        int p = sc.nextInt();// exCode
+        int m = sc.nextInt();// submission
 
         Map<Integer, Student> studentMap = new TreeMap<>();
         for (int i = 0; i < n; i++) {
@@ -20,8 +20,8 @@ public class EIUGRDSA {
 
         Set<Integer> excodeSet = new HashSet<>();
         for (int i = 0; i < p; i++) {
-            int excode = sc.nextInt();
-            excodeSet.add(excode);
+            int exCode = sc.nextInt();
+            excodeSet.add(exCode);
         }
 
         for (int i = 0; i < m; i++) {
@@ -29,30 +29,47 @@ public class EIUGRDSA {
             studentMap.putIfAbsent(idStudent, new Student(idStudent));
             Student student = studentMap.get(idStudent);
 
-            int excodeStudent = sc.nextInt();
+            int exCode = sc.nextInt();
             int grade = sc.nextInt();
-
-            student.addGrade(excodeStudent, grade);
+            if (excodeSet.contains(exCode)) {
+                student.addGrade(exCode, grade);
+            }
         }
 
-        for (Student s:studentMap.values()){
-            sb.append(s.id + " " + s.calculateGpa(p) + " " +"\n");
-        }
+        List<Student> printList = new ArrayList<>(studentMap.values());
+        printList.sort((s1, s2) -> {
+            int compare = Integer.compare(s2.calculateGpa(p), s1.calculateGpa(p));
+            if (compare == 0) {
+                compare = Integer.compare(s1.validSubmission, s2.validSubmission);
+            }
+            if (compare == 0) {
+                compare = Integer.compare(s1.id, s2.id);
+            }
+            return compare;
+        });
 
+        for (Student s : printList) {
+            sb.append(s.id + " " + s.calculateGpa(p) + " " + s.validSubmission + "\n");
+        }
         System.out.println(sb);
+    
     }
 
     static public class Student {
-        int id;
 
-        public Student(int id) {
-            this.id = id;
-        }
+        int id;
+        int validSubmission;
 
         Map<Integer, Integer> gradeMap = new HashMap<>();
 
+        public Student(int id) {
+            this.id = id;
+            this.validSubmission = validSubmission;
+        }
+
         public void addGrade(int excode, int grade) {
             gradeMap.merge(excode, grade, Math::max);
+            validSubmission++;
         }
 
         public int calculateGpa(int p) {
@@ -62,6 +79,5 @@ public class EIUGRDSA {
             }
             return sum / p;
         }
-
     }
 }

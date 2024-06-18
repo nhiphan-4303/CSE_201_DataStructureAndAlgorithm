@@ -1,50 +1,50 @@
+
 import java.io.*;
 import java.util.*;
 
 class EIUGRDSA {
+
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
-        int n = sc.nextInt(); // số lượng sinh viên
-        int p = sc.nextInt(); // số lượng bài tập
-        int m = sc.nextInt(); // số lần nộp bài
+        int n = sc.nextInt(); // student
+        int p = sc.nextInt(); // ex code
+        int m = sc.nextInt(); // submission
 
         Map<Integer, Student> studentMap = new TreeMap<>();
-
         for (int i = 0; i < n; i++) {
             int id = sc.nextInt();
             studentMap.put(id, new Student(id));
         }
 
-        Set<Integer> problems = new HashSet<>();
-        for (int j = 0; j < p; j++) {
-            problems.add(sc.nextInt());
+        Set<Integer> excodeSet = new HashSet<>();
+        for (int i = 0; i < p; i++) {
+            int excode = sc.nextInt();
+            excodeSet.add(excode);
         }
 
-        for (int k = 0; k < m; k++) {
-            int studentId = sc.nextInt();
-            int exerciseCode = sc.nextInt();
+        for (int i = 0; i < m; i++) {
+            int idStudent = sc.nextInt();
+            studentMap.putIfAbsent(idStudent, new Student(idStudent));
+            Student student = studentMap.get(idStudent);
+
+            int excodeStudent = sc.nextInt();
             int grade = sc.nextInt();
 
-            Student student = studentMap.get(studentId);
-            if (student != null) {
-                student.addGrade(exerciseCode, grade);
-            }
+            student.addGrade(excodeStudent, grade);
         }
 
-        for (Student student : studentMap.values()) {
-            sb.append(student.id).append(" ")
-                    .append(student.calculateAvr(p)).append(" ")
-                    .append("\n");
+        for (Student s : studentMap.values()) {
+            sb.append(s.id + " " + s.calculateGpa(p) + " " + "\n");
         }
 
-        System.out.print(sb);
+        System.out.println(sb);
     }
 
-    public static class Student {
+    static public class Student {
+
         int id;
-        double avr;
 
         public Student(int id) {
             this.id = id;
@@ -52,20 +52,22 @@ class EIUGRDSA {
 
         Map<Integer, Integer> gradeMap = new HashMap<>();
 
-        public void addGrade(int exerciseCode, int grade) {
-            gradeMap.merge(exerciseCode, grade, Math::max);
+        public void addGrade(int excode, int grade) {
+            gradeMap.merge(excode, grade, Math::max);
         }
 
-        public int calculateAvr(int numExercise) {
+        public int calculateGpa(int p) {
             int sum = 0;
             for (int grade : gradeMap.values()) {
                 sum += grade;
             }
-            return sum / numExercise;
+            return sum / p;
         }
+
     }
 
     static class InputReader {
+
         StringTokenizer tokenizer;
         BufferedReader reader;
         String temp;
