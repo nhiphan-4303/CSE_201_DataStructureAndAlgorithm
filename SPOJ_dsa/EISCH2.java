@@ -1,5 +1,5 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 class EISCH2 {
     static StringBuilder sb = new StringBuilder();
@@ -11,42 +11,33 @@ class EISCH2 {
         int countScholarship_B = n / 3 - countScholarship_A;
         int countScholarship_C = n / 2 - countScholarship_A - countScholarship_B;
 
-        TreeMap<Double, ArrayList<Student>> tm = new TreeMap<>();
+        TreeMap<Double, ArrayList<Student>> studentMap = new TreeMap<>();
         
         while (n-- > 0) {
             String name = sc.next();
-            int numbers = sc.nextInt();
-            int count = 0;
-            double total = 0;
-            for (int i = 0; i < numbers; i++) {
-                double score = sc.nextDouble();
-                if (score >= 50) {
-                    total += score;
-                    count++;
-                }
-            }
-            total = count == 0 ? 0.0 : total / count;
-            Student student = new Student(total, name);
-            if (!tm.containsKey(total)) {
-                ArrayList<Student> temp = new ArrayList<>();
-                temp.add(student);
-                tm.put(total, temp);
-            } else {
-                tm.get(total).add(student);
+            int subjects = sc.nextInt();
+            double totalScore = 0;
+
+            for (int i = 0; i < subjects; i++) {
+                totalScore += sc.nextDouble();
             }
 
+            double gpa = totalScore / subjects;
+            Student student = new Student(gpa, name);
+
+            studentMap.computeIfAbsent(gpa, k -> new ArrayList<>()).add(student);
         }
 
-        int check = 0;
-        String scholarship = "";
-        for (Map.Entry<Double, ArrayList<Student>> entry : tm.descendingMap().entrySet()) {
-            check += entry.getValue().size();
-            if (check <= countScholarship_A) {
-                scholarship = "A";
-            } else if (check <= countScholarship_B + countScholarship_A) {
-                scholarship = "B";
-            } else if (check <= countScholarship_C + countScholarship_B + countScholarship_A) {
-                scholarship = "C";
+        int totalStudentsConsidered = 0;
+        String scholarshipType = "";
+        for (Map.Entry<Double, ArrayList<Student>> entry : studentMap.descendingMap().entrySet()) {
+            totalStudentsConsidered += entry.getValue().size();
+            if (totalStudentsConsidered <= countScholarship_A) {
+                scholarshipType = "A";
+            } else if (totalStudentsConsidered <= countScholarship_B + countScholarship_A) {
+                scholarshipType = "B";
+            } else if (totalStudentsConsidered <= countScholarship_C + countScholarship_B + countScholarship_A) {
+                scholarshipType = "C";
             } else {
                 break;
             }
@@ -54,7 +45,7 @@ class EISCH2 {
                 return s1.name.compareTo(s2.name);
             });
             for (Student s : entry.getValue()) {
-                sb.append(s.toString()).append(" ").append(scholarship).append("\n");
+                sb.append(s.toString()).append(" ").append(scholarshipType).append("\n");
             }
         }
         System.out.println(sb);

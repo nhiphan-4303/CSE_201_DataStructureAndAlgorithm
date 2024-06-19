@@ -41,7 +41,7 @@ public class EISTULI {
             sb.append(s.id + " " + s.name + " " +
                     Math.round(s.avg) + " " + s.credits + "\n");
 
-            if (n != k && i < k - 1 && listStudents.get(i + 1).avg == listStudents.get(k).avg) {
+            if (n > k && i < k - 1 && listStudents.get(i + 1).avg == listStudents.get(k).avg) {
                 break;
             }
         }

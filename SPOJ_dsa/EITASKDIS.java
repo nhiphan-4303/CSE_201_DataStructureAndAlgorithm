@@ -1,13 +1,15 @@
+
 import java.io.*;
 import java.util.*;
 
 public class EITASKDIS {
+
     static StringBuilder sb = new StringBuilder();
     static InputReader sc = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        int n = sc.nextInt();// số công nhân
+        int m = sc.nextInt();// số công việc
 
         int[] tasks = new int[m];
         for (int i = 0; i < m; i++) {
@@ -23,7 +25,7 @@ public class EITASKDIS {
             }
             return compare;
         });
-        
+
         List<Person> personList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             Person person = new Person(i);
@@ -31,12 +33,16 @@ public class EITASKDIS {
             personList.add(person);
         }
 
+//3 5
+//2 5 6 4 7
+// 2 4 5 6 7
+
         for (int i = m - 1; i >= 0; i--) {
-            Person person = new Person(i);
-            person = pq.poll();
+            Person person = pq.poll();// lấy đầu 
             person.totalHours += tasks[i];
             pq.add(person);
         }
+
         for (Person p : personList) {
             sb.append(p);
         }
@@ -44,6 +50,7 @@ public class EITASKDIS {
     }
 
     static class Person {
+
         int index;
         long totalHours;
 
@@ -58,6 +65,7 @@ public class EITASKDIS {
     }
 
     static class InputReader {
+
         StringTokenizer tokenizer;
         BufferedReader reader;
         String token;
