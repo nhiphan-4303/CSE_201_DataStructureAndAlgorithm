@@ -5,7 +5,7 @@ public class EIAPPLEBOX {
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         int t = sc.nextInt();
         while (t-- > 0) {
             int n = sc.nextInt();

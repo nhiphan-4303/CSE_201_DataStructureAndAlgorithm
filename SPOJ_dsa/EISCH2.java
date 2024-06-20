@@ -24,7 +24,6 @@ class EISCH2 {
 
             double gpa = totalScore / subjects;
             Student student = new Student(gpa, name);
-
             studentMap.computeIfAbsent(gpa, k -> new ArrayList<>()).add(student);
         }
 
