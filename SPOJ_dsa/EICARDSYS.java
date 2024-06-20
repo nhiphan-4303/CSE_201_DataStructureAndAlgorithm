@@ -1,6 +1,6 @@
-import java.util.*;
 import java.io.*;
 import java.text.*;
+import java.util.*;
 
 class EICARDSYS {
 
@@ -17,7 +17,7 @@ class EICARDSYS {
             String id = sc.next();
             double price = sc.nextDouble();
 
-            Customer customer = mapCustomer.getOrDefault(id, new Customer(id));
+            Customer customer = mapCustomer.getOrDefault(id, new Customer());
             double previousPurchase = customer.totalPurchase;
             customer.totalPurchase += price;
 
@@ -42,11 +42,6 @@ class EICARDSYS {
     static class Customer {
         double totalPurchase;
         String id;
-
-        public Customer(String id) {
-            this.id = id;
-            this.totalPurchase = 0.0;
-        }
     }
 
     static class InputReader {

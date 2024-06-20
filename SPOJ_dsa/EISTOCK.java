@@ -1,78 +1,59 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class EISTOCK {
+class EISTOCK {
+
     static InputReader sc = new InputReader(System.in);
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
+        int n = sc.nextInt(); // Number of transactions
+        Map<Long, ProductInfo> products = new HashMap<>(); // Changed Map to use Long for product codes
 
-        int nTransactions = sc.nextInt();
-        Map<Long, Transaction> mapTransactions = new HashMap<>();
-        for (int i = 0; i < nTransactions; i++) {
-
-            String sign = sc.next();
-            long id = sc.nextLong();
+        for (int i = 0; i < n; i++) {
+            String type = sc.next(); // Transaction type remains String
+            long code = sc.nextLong(); // Changed to read as long
             long quantity = sc.nextLong();
-            long valueOfGoods = sc.nextLong();
+            long price = sc.nextLong();
 
-            Transaction ts = null;
-            if (!mapTransactions.containsKey(id)) {
-                if (sign.equals("+")) {
-                    ts = new Transaction(id);
-                    ts.calValue(sign, quantity, valueOfGoods);
-                    mapTransactions.put(id, ts);
+            ProductInfo info = products.getOrDefault(code, new ProductInfo());
+            if (type.equals("+")) {
+                // Import transaction
+                info.stockQuantity += quantity;
+                info.totalImportValue += quantity * price;
+            } else if (type.equals("-")) {
+                // Export transaction
+                if (info.stockQuantity >= quantity) {
+                    info.stockQuantity -= quantity;
+                    info.totalExportValue += quantity * price;
                 }
-            } else {
-                ts = mapTransactions.get(id);
-                ts.calValue(sign, quantity, valueOfGoods);
             }
-
+            products.put(code, info);
         }
 
-        List<Transaction> listTransactions = new ArrayList<>(mapTransactions.values());
-        listTransactions.sort((a, b) -> Long.compare(a.id, b.id));
+        // Output results sorted by product code
+        List<Long> codes = new ArrayList<>(products.keySet());
+        codes.sort(null);
 
-        for (Transaction transaction : listTransactions) {
-            sb.append(transaction).append("\n");
+        for (Long code : codes) {
+            ProductInfo info = products.get(code);
+            if (info.totalImportValue > 0 || info.totalExportValue > 0) {
+                sb.append(code + " " + info.totalImportValue + " " + info.totalExportValue + "\n");
+            }
         }
+
         System.out.println(sb);
     }
 
-    static class Transaction {
-        long id;
-        long quantity;
-        long totalImportValue;
-        long totalExportValue;
-
-        public Transaction(long id) {
-            this.id = id;
-        }
-
-        public void calValue(String sign, long quantity, long valueOfGood) {
-            if (sign.equals("+")) {
-                this.quantity += quantity;
-                totalImportValue += valueOfGood * quantity;
-            } else {
-                if (this.quantity >= quantity) {
-                    this.quantity -= quantity;
-                    totalExportValue += valueOfGood * quantity;
-                }
-            }
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(this.id).append(" ").append(this.totalImportValue).append(" ").append(this.totalExportValue);
-            return sb.toString();
-        }
+    static class ProductInfo {
+        long stockQuantity = 0;
+        long totalImportValue = 0;
+        long totalExportValue = 0;
     }
 
     static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
-        String token;
         String temp;
 
         public InputReader(InputStream stream) {
@@ -102,10 +83,6 @@ public class EISTOCK {
                 }
             }
             return tokenizer.nextToken();
-        }
-
-        public double nextDouble() {
-            return Double.parseDouble(next());
         }
 
         public int nextInt() {
