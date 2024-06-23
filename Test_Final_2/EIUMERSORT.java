@@ -18,7 +18,7 @@ public class EIUMERSORT {
         print(arr);
     }
 
-    static public void mergeSort(int[] arr, int from, int to) {
+    static void mergeSort(int[] arr, int from, int to) {
         if (from < to) {
             int middle = (from + to) / 2;
 
@@ -29,7 +29,7 @@ public class EIUMERSORT {
         }
     }
 
-    static public void merge(int[] arr, int from, int middle, int to) {
+    static void merge(int[] arr, int from, int middle, int to) {
         int n1 = (middle - from) + 1;
         int n2 = (to - middle);
 
@@ -40,6 +40,7 @@ public class EIUMERSORT {
         System.arraycopy(arr, middle + 1, rightArr, 0, n2);
 
         int i = 0, j = 0, k = from;
+
         while (i < n1 && j < n2) {
             if (leftArr[i] <= rightArr[j]) {
                 arr[k] = leftArr[i];

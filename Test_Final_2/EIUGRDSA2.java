@@ -10,40 +10,39 @@ public class EIUGRDSA2 {
     public static void main(String[] args) {
         int n = sc.nextInt();
         int p = sc.nextInt();
-        int m = sc.nextInt();
+        long m = sc.nextLong();
 
-        Map<Integer, Student> studentMap = new HashMap<>();
+        Map<Long, Student> studentMap = new TreeMap<>();
         for (int i = 0; i < n; i++) {
-            int id = sc.nextInt();
-            studentMap.put(id, new Student(id));
+            long ids = sc.nextLong();
+            studentMap.put(ids, new Student(ids));
         }
 
-        Set<Integer> problems = new HashSet<>();
+        Set<Long> exCodeSet = new HashSet<>();
         for (int i = 0; i < p; i++) {
-            int problemCode = sc.nextInt();
-            problems.add(problemCode);
+            exCodeSet.add(sc.nextLong());
         }
 
         for (int i = 0; i < m; i++) {
-            int idStudent = sc.nextInt();
+            long idStudent = sc.nextLong();
             studentMap.putIfAbsent(idStudent, new Student(idStudent));
-
-            int idCourse = sc.nextInt();
             Student student = studentMap.get(idStudent);
-            int grade = sc.nextInt();
-            if (problems.contains(idCourse)) {
-                student.addGrade(idCourse, grade);
+
+            long exCodeStudent = sc.nextLong();
+            long grade = sc.nextLong();
+            if (exCodeSet.contains(exCodeStudent)) {
+                student.addGrade(exCodeStudent, grade);
             }
         }
 
         List<Student> printList = new ArrayList<>(studentMap.values());
         printList.sort((s1, s2) -> {
-            int compare = Integer.compare(s2.calculateGpa(p), s1.calculateGpa(p));
+            int compare = Long.compare(s2.calculateGpa(p), s1.calculateGpa(p));
             if (compare == 0) {
-                compare = Integer.compare(s1.validSubmission, s2.validSubmission);
+                compare = Long.compare(s1.validSubmission, s2.validSubmission);
             }
             if (compare == 0) {
-                return Integer.compare(s1.id, s2.id);
+                compare = Long.compare(s1.id, s2.id);
             }
             return compare;
         });
@@ -51,30 +50,30 @@ public class EIUGRDSA2 {
         for (Student s : printList) {
             sb.append(s.id + " " + s.calculateGpa(p) + " " + s.validSubmission + "\n");
         }
-        System.out.println(sb);
 
+        System.out.println(sb);
     }
 
     static class Student {
 
-        int id;
-        int gpa;
-        int validSubmission;
+        long id;
+        long gpa;
+        long validSubmission;
 
-        public Student(int id) {
+        public Student(long id) {
             this.id = id;
         }
 
-        Map<Integer, Integer> gradeMap = new HashMap<>();
+        Map<Long, Long> gradeMap = new HashMap<>();
 
-        public void addGrade(int idProblem, int grade) {
-            gradeMap.merge(idProblem, grade, Math::max);
+        public void addGrade(long exCode, long grade) {
+            gradeMap.merge(exCode, grade, Math::max);
             validSubmission++;
         }
 
-        public int calculateGpa(int p) {
-            int sum = 0;
-            for (int grade : gradeMap.values()) {
+        public long calculateGpa(int p) {
+            long sum = 0;
+            for (Long grade : gradeMap.values()) {
                 sum += grade;
             }
             return gpa = sum / p;

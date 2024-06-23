@@ -14,10 +14,19 @@ public class EIUQUISORT {
             arr[i] = sc.nextInt();
         }
 
-        double[] stableArr = add(arr);
+        double[] stableArr = addArr(arr);
         shuffle(stableArr);
-        quickSort(stableArr,0,n-1);
+        quickSort(stableArr, 0, n - 1);
         print(stableArr);
+
+    }
+
+    static void shuffle(double[] arr) {
+        Random rd = new Random();
+        for (int i = arr.length - 1; i > 0; i--) {
+            int j = rd.nextInt(i + 1);
+            swap(arr, i, j);
+        }
     }
 
     static void quickSort(double[] arr, int from, int to) {
@@ -39,7 +48,7 @@ public class EIUQUISORT {
                 swap(arr, i, j);
             }
         }
-        swap(arr, from, i);
+        swap(arr, i, from);
         return i;
     }
 
@@ -49,22 +58,13 @@ public class EIUQUISORT {
         arr[j] = temp;
     }
 
-    static double[] add(int[] arr) {
-        double x = 0.000000001;
+    static double[] addArr(int[] arr) {
         double[] stableArr = new double[arr.length];
+        double x = 0.000000001;
         for (int i = 0; i < arr.length; i++) {
             stableArr[i] = arr[i] + ((i + 1) * x);
         }
         return stableArr;
-
-    }
-
-    static void shuffle(double[] arr) {
-        Random rd = new Random();
-        for (int i = arr.length - 1; i > 0; i--) {
-            int j = rd.nextInt(i + 1);
-            swap(arr, i, j);
-        }
     }
 
     static void print(double[] arr) {

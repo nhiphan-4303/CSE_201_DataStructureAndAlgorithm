@@ -63,7 +63,6 @@ class EIUGRDSA2 {
 
         public Student(int id) {
             this.id = id;
-            this.validSubmission = validSubmission;
         }
 
         public void addGrade(int excode, int grade) {

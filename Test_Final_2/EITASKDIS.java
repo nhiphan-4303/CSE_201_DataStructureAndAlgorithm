@@ -1,0 +1,61 @@
+package Test_Final_2;
+
+import java.util.*;
+
+public class EITASKDIS {
+
+    static Scanner sc = new Scanner(System.in);
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) {
+        int n = sc.nextInt();//số người
+        int m = sc.nextInt(); // số công vc
+
+        int[] tasks = new int[m];
+        for (int i = 0; i < m; i++) {
+            tasks[i] = sc.nextInt();
+        }
+
+        Arrays.sort(tasks);
+        Queue<Person> pq = new PriorityQueue<>((p1, p2) -> {
+            int compare = Long.compare(p1.totalHours, p2.totalHours);
+            if (compare == 0) {
+                return Integer.compare(p1.id, p2.id);
+            }
+            return compare;
+        });
+        List<Person> personList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            Person p = new Person(i);
+            pq.add(p);
+            personList.add(p);
+        }
+
+        for (int i = m - 1; i >= 0; i--) {
+            Person p = pq.poll();
+            p.totalHours += tasks[i];
+            pq.add(p);
+        }
+
+        for (Person p : personList) {
+            sb.append(p);
+        }
+
+        System.out.println(sb);
+    }
+
+    static class Person {
+
+        int id;
+        long totalHours;
+
+        public Person(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return this.totalHours + " ";
+        }
+    }
+}
