@@ -1,0 +1,61 @@
+- Bài này nên làm hướng đối tượng 
+- Về tham khảo thêm file sample
+- Khai báo class gần giống với kiểu dữ liệu, nhiều class trong 1 class 
+
+lộn bài khác
+/////////////////////////////////////////////////////////////////////////////////////////////////
+ main {
+	int n = sc.nextInt();
+	var list = new HashMap<DOB>();
+	for(...){
+		var dob = new DOB(sc.nextLine());
+		list.add(dob);
+	}
+
+	list.sort((d1,d2) -> {
+		var.compare = d1.year - d2.year;
+		if (compare == 0){
+			compare = d1.month - d2.month;
+		}
+		if (compare == 0){
+			compare = d1.day - d2.day;
+		}
+		return compare;
+	});
+}
+
+static class DOB {
+
+	int year;
+	int month;
+	int day;
+
+	public DOB (String dofString){
+		dofString.split(" ");
+		year = 0;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+ public static void main(String[] args) {
+        var n = sc.nextInt();
+        var mapCount = new HashMap<Integer, Integer>();
+
+        // 10 0 1993 =>
+        for (var i = 0; i < n; i++) {
+            var day = sc.nextInt();
+            var month = sc.nextInt();
+            var year = sc.nextInt();
+            var key = sc.nextInt();
+            mapCount.put(key, mapCount.getOrDefault(key, 0) + 1);
+        }
+
+        var list = new ArrayList<>(mapCount.keySet());
+        list.sort(null);
+        for (var key : list) {
+            var year = key / 10000;
+            var month = (key % 10000) / 100;
+            var day = key % 100;
+            System.out.println(day + "/" + month + "/" + year + " " + mapCount.get(key));
+        }
+    }   

@@ -1,0 +1,7 @@
+Các bài toán cho n items tìm...
+tìm max, tìm min, 
+các bài toán liên quan tới n log n là các bài toán giải thuật sort.
+Big - oh:
+Thể hiện cho khái niệm là chặn trên, chặn dưới (Omega)
+O(n^2)
+Phân tích độ phức tạp giải thuật

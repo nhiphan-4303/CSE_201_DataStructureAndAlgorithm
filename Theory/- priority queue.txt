@@ -1,0 +1,3 @@
+- priority queue
+- binary search
+- cấu trúc dữ liệu, bán hàng, tính điểm 

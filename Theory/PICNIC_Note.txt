@@ -1,0 +1,12 @@
+- Có bao nhiêu số 4 thì bấy nhiêu xe.
+----------
+n1,n2,n3,n4
+
+nCar = n4;
+nCar += n3;
+
+n1 = Math.max (0, n1 - n3);
+
+nCar += n2/2;
+n2 %=2;
+nCar += (n1 + n2*2 + 3) /4;
